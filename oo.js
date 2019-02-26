@@ -1,14 +1,11 @@
-var Engine = Matter.Engine,
-  // Render = Matter.Render,
-  World = Matter.World,
-  Bodies = Matter.Bodies;
+var Engine = Matter.Engine, World = Matter.World, Bodies = Matter.Bodies;
 
 var engine;
 var world;
 var boxy;
 
 let img=[]; // Declare variable 'img'.
-pictures=[]
+
 function preload(){
   for(let i=0; i<2; i++){img[i]=loadImage(`mm${i}.png`);}
   }
@@ -20,15 +17,15 @@ function setup() {
   world=engine.world;
   Engine.run(engine);
   /* from The Box() actually it creates a matter.js body and
-  attaches on a p5.js rect */
-  boxy=new Box(200,10,50,50);
+  attaches on a p5.js image */
+  boxy=new Box(200,10,50,50,img[1]);
   
 
 
-  for(let i=0; i<img.length; i++){
-    pictures[i]=new picture(img[i],boxy);
-    //pictures[i]
-  }
+  // for(let i=0; i<img.length; i++){
+  //   pictures[i]=new picture(img[i]);
+  //   //pictures[i]
+  // }
   
 }
 
@@ -38,33 +35,23 @@ function draw() {
   stroke(150);
    
   boxy.show();
-  //console.log(boxy.body.position.y);
-  for(let i=0; i<pictures.length; i++){
     
-    pictures[i].showPict();
-
-  }  
 }
 
 
-class picture{
-  constructor(img,boxy){
-    this.image=img;
-    this.boxy=boxy;
 
-    
-    
-  }
-  showPict(){
-  console.log(this.boxy.body.position.y);
-   image(this.image, 0, 0,this.image.width/5,this.image.height/5);
-  }
-}
+function Box(x,y,w,h,img) {
 
-function Box(x,y,w,h) {
+  this.scale=.2;
+  this.image=img;
+  
+  
+  this.a=this.image.width*this.scale;
+  this.b=this.image.height*this.scale;
+  
   this.body=Bodies.rectangle(x, y, w,h);
-  this.w=w;
-  this.h=h;
+  
+  
   World.add(world,this.body);
 
   this.show=function(){
@@ -72,36 +59,11 @@ function Box(x,y,w,h) {
       var angle=this.body.angle;
       push();
       translate(pos.x,pos.y);
-      rect(0,0,this.w,this.h);
+      //rect(0,0,this.a,this.b);
+      image(this.image, 0, 0,this.a,this.b);
       pop();
+      
   }
 
 
 }
-/* class picture{
-  constructor(img){
-    this.image=img;
-    
-  }
-  showPict(){
-   image(this.image, 0, 0,this.image.width/5,this.image.height/5);
-  }
-}
-
-function Box(x,y,w,h) {
-  this.body=Bodies.rectangle(x, y, w,h);
-  this.w=w;
-  this.h=h;
-  World.add(world,this.body);
-
-  this.show=function(){
-      var pos=this.body.position;
-      var angle=this.body.angle;
-      push();
-      translate(pos.x,pos.y);
-      rect(0,0,this.w,this.h);
-      pop();
-  }
-
-
-} */
