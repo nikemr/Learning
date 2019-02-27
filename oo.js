@@ -1,8 +1,11 @@
-var Engine = Matter.Engine, World = Matter.World, Bodies = Matter.Bodies;
+var Engine = Matter.Engine,
+  World = Matter.World,
+  Bodies = Matter.Bodies,
+  Constraint=Matter.Constraint;
 
 var engine;
 var world;
-var boxy;
+let boxes=[];
 
 let img=[]; // Declare variable 'img'.
 
@@ -18,15 +21,15 @@ function setup() {
   Engine.run(engine);
   /* from The Box() actually it creates a matter.js body and
   attaches on a p5.js image */
-  boxy=new Box(200,10,50,50,img[1]);
-  
-
-
-  // for(let i=0; i<img.length; i++){
-  //   pictures[i]=new picture(img[i]);
-  //   //pictures[i]
-  // }
-  
+  boxes.push(new Box(500,150,50,50,img[1]));
+  boxes.push(new Box(200,10,50,50,img[0]));
+  var options={bodyA: boxes[0].body,
+    bodyB: boxes[1].body,
+    length: 70,
+    stiffness: .4}
+  Matter.Body.setStatic(boxes[1].body,true)
+  var constraint=Constraint.create(options);
+  World.add(world,constraint);
 }
 
 
@@ -34,7 +37,9 @@ function draw() {
   background("orange");
   stroke(150);
    
-  boxy.show();
+  boxes[0].show();
+  boxes[1].show();
+
     
 }
 
@@ -59,7 +64,7 @@ function Box(x,y,w,h,img) {
       var angle=this.body.angle;
       push();
       translate(pos.x,pos.y);
-      //rect(0,0,this.a,this.b);
+      rect(0,0,this.a,this.b);
       image(this.image, 0, 0,this.a,this.b);
       pop();
       
