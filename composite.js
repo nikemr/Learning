@@ -27,7 +27,7 @@ function setup() {
   Engine.run(engine);
   
   birinci=new daire(70,80,10);
-  ikinci=new daire(80,80,10);
+  ikinci=new daire(80,60,10);
   
   
   
@@ -41,13 +41,13 @@ function setup() {
         
   }
     
-  Matter.Body.setStatic(birinci.body, true);
-  World.add(world,birinci.body);
-  World.add(world,ikinci.body);  
+  // Matter.Body.setStatic(birinci.body, true);
+  // World.add(world,birinci.body);
+  // World.add(world,ikinci.body);  
   let constraint=Constraint.create(options);
   World.add(world,constraint);
 
-  table = Bodies.rectangle(400,600,800,30);  
+  table = Bodies.rectangle(400,600,800,80);  
   Matter.Body.setStatic(table, true);  
   //Add them all to The World  
   World.add(world,table);
@@ -55,6 +55,7 @@ function setup() {
   Composite.add(komposto,birinci.body);
   Composite.add(komposto,ikinci.body);
   Composite.add(komposto,constraint);
+  World.add(world,komposto);
 
   
 
@@ -70,7 +71,7 @@ function draw(){
   circle(ix,ye,10);
   circle(ix2,ye2,10);
   rectMode(CENTER);
-  rect(400,600,800,30);
+  rect(400,600,800,80);
   //console.log(birinci.body.position)
   Matter.Composite.translate(komposto, {x:1,y:1}, true)
 

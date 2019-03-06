@@ -16,18 +16,31 @@ function setup() {
     createCanvas(1500, 1500);
     CompObj1= new CompObj(300,70,60,60);
     Matter.Body.setStatic(CompObj1.compoundBodyA, true);
-    CompObj2= new CompObj(300,150,60,60);
+    CompObj2= new CompObj(450,180,60,60);
 
 
     table = Bodies.rectangle(400,600,800,30);  
-    Matter.Body.setStatic(table, true);  
+    table2 = Bodies.rectangle(700,250,800,30); 
+    Matter.Body.setStatic(table, true); 
+    Matter.Body.setStatic(table2, true);   
     //Add them all to The World  
     World.add(world,table);
+    World.add(world,table2);
     
+    
+    let constraint=Constraint.create({
+        bodyA: CompObj1.compoundBodyA,
+        bodyB: CompObj2.compoundBodyA,
+        length: 131,
+        stiffness: .1,
+        dumping:1
+        
+        });
+    World.add(world,constraint);
+
 }
 
 function CompObj(x,y,wi,he){
-    this.x=x;
     this.y=y;
     this.wi=wi;
     this.he=he
@@ -43,7 +56,7 @@ function CompObj(x,y,wi,he){
     
     
     this.show=function(){
-        var angle=this.firstOb.angle
+        var angle=this.compoundBodyA.angle
         var pos=this.firstOb.position;
         var posx=pos.x;
         var posy=pos.y;
@@ -53,18 +66,14 @@ function CompObj(x,y,wi,he){
         var pos3=this.thirdOb.position;  
         var pos3x=pos3.x;
         var pos3y=pos3.y  
-        rectMode(CENTER);
         push();
+        rectMode(CENTER);
         translate(posx,posy);
-        
-        rect(posx,posy,this.wi,this.he); 
-                   
-        circle(pos2x,pos2y,5);
-        circle(pos3x,pos3y,5);
+        rotate(angle);
+        rect(0,0,this.wi,this.he); 
         pop();
-        
-
-        
+        circle(pos2x,pos2y,5);
+        circle(pos3x,pos3y,5); 
         
         
     }   
@@ -74,8 +83,15 @@ function draw(){
     background("red");
     CompObj1.show();
     CompObj2.show();
+    push();
+    rectMode(CENTER);
     rect(400,600,800,30);
-    Matter.Body.rotate(CompObj2.compoundBodyA,.1);
+    rect(700,250,800,30);
+    pop();
+    line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
+       
+    //Matter.Body.rotate(CompObj2.compoundBodyA,.05);
+    // Matter.Body.translate(CompObj2.compoundBodyA,{x:1,y:1});
     
     
     
