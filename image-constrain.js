@@ -31,8 +31,8 @@ function setup() {
     bodyB: picture2.body,
     length: 150,
     stiffness: .4,
-    pointA: picture1.botCoor,
-    pointB: picture2.topCoor
+    pointA: {x:0, y:50},
+    pointB: {x:0, y:-50}
     }
     
   // Create Ground and make static

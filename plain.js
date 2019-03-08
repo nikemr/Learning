@@ -28,14 +28,26 @@ function setup() {
     World.add(world,table2);
     
     
-    let constraint=Constraint.create({
+
+
+
+    constraint = Constraint.create({
         bodyA: CompObj1.compoundBodyA,
+        pointA: {x:0,y:30},
         bodyB: CompObj2.compoundBodyA,
-        length: 131,
-        stiffness: .1,
-        dumping:1
-        
-        });
+        pointB: {x:0,y:-30},
+        stiffness: 0.003,
+        damping: 0.05,
+        length: 70
+    })
+    // let constraint=Constraint.create({
+    //     bodyA: CompObj1.compoundBodyA,
+    //     bodyB: CompObj2.compoundBodyA,
+    //     length: 131,
+    //     stiffness:0.1,
+    //     dumping:1
+    //     pointA:{x:0,y:30},
+    //     pointB:{x:0,y:-30})}
     World.add(world,constraint);
 
 }
@@ -79,6 +91,7 @@ function CompObj(x,y,wi,he){
     }   
         
 }
+
 function draw(){
     background("red");
     CompObj1.show();
@@ -89,6 +102,7 @@ function draw(){
     rect(700,250,800,30);
     pop();
     line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
+    CompObj1.compoundBodyA
        
     //Matter.Body.rotate(CompObj2.compoundBodyA,.05);
     // Matter.Body.translate(CompObj2.compoundBodyA,{x:1,y:1});
