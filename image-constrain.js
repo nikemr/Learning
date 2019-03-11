@@ -21,7 +21,7 @@ function preload(){
 function setup() {
   createCanvas(1500, 1500); 
   //Create picture and attach to a Matter.JS body
-
+  
   picture1=new picture(img[0],300,50);
   Matter.Body.setStatic(picture1.body, true)
   picture2=new picture(img[1],550,500);
@@ -32,7 +32,7 @@ function setup() {
     length: 150,
     stiffness: .4,
     pointA: {x:0, y:50},
-    pointB: {x:0, y:-50}
+    pointB: {x:0, y:-87}
     }
     
   // Create Ground and make static

@@ -11,63 +11,70 @@ var world;
 engine=Engine.create();
 world=engine.world;
 Engine.run(engine);
-
+let img=[];
+let constraint=[];
+function preload(){
+    for(let i=0; i<3; i++){img[i]=loadImage(`mm${i}.png`);}
+    }
 function setup() {
+    
+    
     createCanvas(1500, 1500);
-    CompObj1= new CompObj(300,70,60,60);
-    Matter.Body.setStatic(CompObj1.compoundBodyA, true);
-    CompObj2= new CompObj(450,180,60,60);
+    
+    for(let i=0; i<img.length; i++){
+        CompObj[i]=new CompObj(300,70,img[i]);
+        World.add(world,CompObj[i].compoundBodyA);
+    }
 
+    Matter.Body.setStatic(CompObj[0].compoundBodyA,true);
+
+    for(let e=0; e<CompObj.length-1; e++){
+
+        constraint[e] = Constraint.create({
+            bodyA: CompObj[e].compoundBodyA,
+            pointA: {x:0,y:CompObj[e].height/2},
+            bodyB: CompObj[e+1].compoundBodyA,
+            pointB: {x:0,y:-(CompObj[e+1].height/2)},
+            stiffness: 0.01,
+            damping: 0.1,
+            length: 2
+        }) 
+        World.add(world,constraint[e]);
+    }
 
     table = Bodies.rectangle(400,600,800,30);  
-    table2 = Bodies.rectangle(700,250,800,30); 
+   //table2 = Bodies.rectangle(700,250,800,30); 
     Matter.Body.setStatic(table, true); 
-    Matter.Body.setStatic(table2, true);   
+    //Matter.Body.setStatic(table2, true);   
     //Add them all to The World  
     World.add(world,table);
-    World.add(world,table2);
-    
-    
-
-
-
-    constraint = Constraint.create({
-        bodyA: CompObj1.compoundBodyA,
-        pointA: {x:0,y:30},
-        bodyB: CompObj2.compoundBodyA,
-        pointB: {x:0,y:-30},
-        stiffness: 0.003,
-        damping: 0.05,
-        length: 70
-    })
-    // let constraint=Constraint.create({
-    //     bodyA: CompObj1.compoundBodyA,
-    //     bodyB: CompObj2.compoundBodyA,
-    //     length: 131,
-    //     stiffness:0.1,
-    //     dumping:1
-    //     pointA:{x:0,y:30},
-    //     pointB:{x:0,y:-30})}
-    World.add(world,constraint);
+    // World.add(world,table2); 
 
 }
 
-function CompObj(x,y,wi,he){
-    this.y=y;
-    this.wi=wi;
-    this.he=he
-    this.firstOb=Bodies.rectangle(x,y,wi,he);
-    this.secondOb=Bodies.circle(x,y-he/2,5);
-    this.thirdOb=Bodies.circle(x,y+he/2,5);
-     
-    this.compoundBodyA = Body.create({
-        parts: [this.firstOb, this.secondOb,this.thirdOb]
-        });
-    World.add(world,this.compoundBodyA);
+class CompObj{
+
+    constructor(x,y,img){
+        this.img=img;
+        this.width=img.width/6;
+        this.height=img.height/6;
+        this.x=x
+        this.y=y;
+        
+        this.firstOb=Bodies.rectangle(x,y,this.width,this.height);
+        this.secondOb=Bodies.circle(x,y-this.height/2,5);
+        this.thirdOb=Bodies.circle(x,y+this.height/2,5);
+        
+        this.compoundBodyA = Body.create({
+            parts: [this.firstOb, this.secondOb,this.thirdOb]
+            });
+        
+    }
+   
     
     
     
-    this.show=function(){
+    show(){
         var angle=this.compoundBodyA.angle
         var pos=this.firstOb.position;
         var posx=pos.x;
@@ -82,10 +89,11 @@ function CompObj(x,y,wi,he){
         rectMode(CENTER);
         translate(posx,posy);
         rotate(angle);
-        rect(0,0,this.wi,this.he); 
+        //rect(0,0,this.width,this.height); 
+        image(this.img, 0-this.width/2, 0-this.height/2,this.width,this.height); 
         pop();
-        circle(pos2x,pos2y,5);
-        circle(pos3x,pos3y,5); 
+        //circle(pos2x,pos2y,5);
+        //circle(pos3x,pos3y,5); 
         
         
     }   
@@ -94,19 +102,25 @@ function CompObj(x,y,wi,he){
 
 function draw(){
     background("red");
-    CompObj1.show();
-    CompObj2.show();
+    for(i=0; i<CompObj.length; i++){
+        CompObj[i].show();
+        
+
+    }
+    for(i=0; i<CompObj.length-1; i++){
+        
+        line(CompObj[i].thirdOb.position.x,CompObj[i].thirdOb.position.y,CompObj[i+1].secondOb.position.x, CompObj[i+1].secondOb.position.y);
+
+    }
+
     push();
     rectMode(CENTER);
     rect(400,600,800,30);
-    rect(700,250,800,30);
+    
     pop();
-    line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
-    CompObj1.compoundBodyA
+    // line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
+    // CompObj1.compoundBodyA
        
-    //Matter.Body.rotate(CompObj2.compoundBodyA,.05);
-    // Matter.Body.translate(CompObj2.compoundBodyA,{x:1,y:1});
-    
-    
+     
     
 }
