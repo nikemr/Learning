@@ -42,13 +42,11 @@ function setup() {
         World.add(world,constraint[e]);
     }
 
-    table = Bodies.rectangle(400,600,800,30);  
-   //table2 = Bodies.rectangle(700,250,800,30); 
-    Matter.Body.setStatic(table, true); 
-    //Matter.Body.setStatic(table2, true);   
+    table = Bodies.rectangle(400,600,800,30);   
+    Matter.Body.setStatic(table, true);       
     //Add them all to The World  
     World.add(world,table);
-    // World.add(world,table2); 
+    
 
 }
 
@@ -67,7 +65,7 @@ class CompObj{
         
         this.compoundBodyA = Body.create({
             parts: [this.firstOb, this.secondOb,this.thirdOb]
-            });
+        });
         
     }
    
@@ -104,22 +102,16 @@ function draw(){
     background("red");
     for(i=0; i<CompObj.length; i++){
         CompObj[i].show();
-        
-
     }
-    for(i=0; i<CompObj.length-1; i++){
-        
+    for(i=0; i<CompObj.length-1; i++){        
         line(CompObj[i].thirdOb.position.x,CompObj[i].thirdOb.position.y,CompObj[i+1].secondOb.position.x, CompObj[i+1].secondOb.position.y);
-
     }
 
     push();
     rectMode(CENTER);
-    rect(400,600,800,30);
-    
+    rect(400,600,800,30);    
     pop();
-    // line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
-    // CompObj1.compoundBodyA
+    
        
      
     
