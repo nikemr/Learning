@@ -99,7 +99,7 @@ class CompObj{
 }
 
 function draw(){
-    background("red");
+    background('#79f4ef');
     for(i=0; i<CompObj.length; i++){
         CompObj[i].show();
     }
