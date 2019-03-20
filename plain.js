@@ -11,9 +11,15 @@ var world;
 engine=Engine.create();
 world=engine.world;
 Engine.run(engine);
-
+let img=[];
+var imageScale=.25
+function preload(){
+        for(let i=0; i<2; i++){img[i]=loadImage(`mm${i}.png`);}
+        }
 function setup() {
+    
     createCanvas(1500, 1500);
+   
     CompObj1= new CompObj(300,70,60,60);
     Matter.Body.setStatic(CompObj1.compoundBodyA, true);
     CompObj2= new CompObj(450,180,60,60);
@@ -38,16 +44,9 @@ function setup() {
         pointB: {x:0,y:-30},
         stiffness: 0.003,
         damping: 0.05,
-        length: 70
+        length: 55
     })
-    // let constraint=Constraint.create({
-    //     bodyA: CompObj1.compoundBodyA,
-    //     bodyB: CompObj2.compoundBodyA,
-    //     length: 131,
-    //     stiffness:0.1,
-    //     dumping:1
-    //     pointA:{x:0,y:30},
-    //     pointB:{x:0,y:-30})}
+   
     World.add(world,constraint);
 
 }
@@ -103,10 +102,5 @@ function draw(){
     pop();
     line(CompObj1.thirdOb.position.x,CompObj1.thirdOb.position.y,CompObj2.secondOb.position.x, CompObj2.secondOb.position.y);
     CompObj1.compoundBodyA
-       
-    //Matter.Body.rotate(CompObj2.compoundBodyA,.05);
-    // Matter.Body.translate(CompObj2.compoundBodyA,{x:1,y:1});
-    
-    
-    
+    image(img[0], 0, 0);
 }
