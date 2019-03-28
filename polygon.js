@@ -22,7 +22,7 @@ function setup() {
     createCanvas(1500, 1500);
     CompObj[0]=new CompObj(img[0]);
     World.add(world,CompObj[0].firstOb);
-    table = Bodies.rectangle(400,415,800,30);   
+    table = Bodies.rectangle(450,500,800,30);   
     Matter.Body.setStatic(table, true);       
     //Add them all to The World  
     World.add(world,table);
@@ -34,14 +34,7 @@ function draw() {
     if (CompObj[1]){
         CompObj[1].show();
         World.add(world,CompObj[1].firstOb);
-    }
-    
-// console.log(CompObj[0].firstOb.position);
-//image(img[0],img[0].width/2,img[0].height/2);
-
-
-
-
+    }    
 }
 
 function mouseClicked() {
@@ -52,6 +45,7 @@ function mouseClicked() {
   class CompObj{
 
     constructor(img){
+        
         this.img=img;
         this.width=img.width;
         this.height=img.height;
@@ -66,31 +60,20 @@ function mouseClicked() {
     
     
     show(){
-        // var angle=this.compoundBodyA.angle
-        // var pos=this.firstOb.position;
-        // var posx=pos.x;
-        // var posy=pos.y;
-         
-        push();
-        
-        // translate(this.firstOb.position.x,this.firstOb.position.y);
-        
+        var angle=this.firstOb.angle        
         beginShape();
         vertex(this.firstOb.vertices[0]['x'], this.firstOb.vertices[0]['y']);
         vertex(this.firstOb.vertices[1]['x'], this.firstOb.vertices[1]['y']);
         vertex(this.firstOb.vertices[2]['x'], this.firstOb.vertices[2]['y']);
         vertex(this.firstOb.vertices[3]['x'], this.firstOb.vertices[3]['y']);
-
-        // vertex(this.firstOb.vertices[0]['x'], this.firstOb.vertices[0]['y']);
-        // vertex(this.firstOb.vertices[1]['x'], this.firstOb.vertices[1]['y']);
-        // vertex(this.firstOb.vertices[2]['x'], this.firstOb.vertices[2]['y']);
-        // vertex(this.firstOb.vertices[3]['x'], this.firstOb.vertices[3]['y']);
-        
         endShape(CLOSE);
          
-        
+        push();
+        translate(this.firstOb.position.x,this.firstOb.position.y)
+        rotate(angle);
+        image(this.img,0-this.img.width/6,0-this.img.height/6,this.width/3,this.height/3);
         pop();
-        image(this.img, 0-this.width/2, 0-this.height/2,this.width,this.height); 
+         
         
         
     }   
