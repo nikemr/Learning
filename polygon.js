@@ -1,7 +1,7 @@
 var Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies,
-  Constraint=Matter.Constraint
+  Constraint=Matter.Constraint,
   Body = Matter.Body;
   
 
@@ -29,12 +29,15 @@ function setup() {
 }
     
 function draw() {
+    
     background('#79f4ef');
+    
     CompObj[0].show();
     if (CompObj[1]){
         CompObj[1].show();
         World.add(world,CompObj[1].firstOb);
-    }    
+    }   
+    image(img[0],0,0,img[0].width/3,img[0].height/3); 
 }
 
 function mouseClicked() {
@@ -52,6 +55,7 @@ function mouseClicked() {
         //this.x=x
         //this.y=y;
         
+        translate(100,100)
         this.firstOb=Matter.Bodies.fromVertices(50,50,[{ x: 100, y: 200 }, { x: 200, y:200 }, { x: 200, y: 100 }, { x: 100, y: 100 }]);
         
     }
@@ -60,6 +64,7 @@ function mouseClicked() {
     
     
     show(){
+
         var angle=this.firstOb.angle        
         beginShape();
         vertex(this.firstOb.vertices[0]['x'], this.firstOb.vertices[0]['y']);
@@ -72,9 +77,7 @@ function mouseClicked() {
         translate(this.firstOb.position.x,this.firstOb.position.y)
         rotate(angle);
         image(this.img,0-this.img.width/6,0-this.img.height/6,this.width/3,this.height/3);
-        pop();
-         
-        
+        pop();      
         
     }   
         
