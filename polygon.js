@@ -20,7 +20,7 @@ function preload(){
 function setup() {
     
     createCanvas(1500, 1500);
-    CompObj[0]=new CompObj();
+    CompObj[0]=new CompObj(img[0]);
     World.add(world,CompObj[0].firstOb);
     table = Bodies.rectangle(400,415,800,30);   
     Matter.Body.setStatic(table, true);       
@@ -51,10 +51,10 @@ function mouseClicked() {
   }
   class CompObj{
 
-    constructor(){
-        //this.img=img;
-        //this.width=img.width;
-        //this.height=img.height;
+    constructor(img){
+        this.img=img;
+        this.width=img.width;
+        this.height=img.height;
         //this.x=x
         //this.y=y;
         
@@ -88,9 +88,9 @@ function mouseClicked() {
         
         endShape(CLOSE);
          
-        //image(this.img, 0-this.width/2, 0-this.height/2,this.width,this.height); 
-        pop();
         
+        pop();
+        image(this.img, 0-this.width/2, 0-this.height/2,this.width,this.height); 
         
         
     }   
