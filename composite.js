@@ -34,8 +34,8 @@ function setup() {
   var options={
     bodyA: birinci.body,
     bodyB: ikinci.body,
-    length: 100,
-    stiffness: 0.5,
+    length: 40,
+    stiffness: 1,
     // pointA: {x:birinci.body.position.x, y:birinci.body.position.y},
     // pointB: {x:ikinci.body.position.x, y:ikinci.body.position.y}
         
