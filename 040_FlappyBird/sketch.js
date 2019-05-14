@@ -8,10 +8,11 @@ function draw() {
   background(0);
   bird.show();
   bird.update();
-  function keyPressed() {
-    if (key==' ') {
-      console.log('SPACE');
-      
-    }
+  
+}
+function keyPressed() {
+  if (key==' ') {
+    console.log('SPACE');    
+    bird.up();
   }
 }
