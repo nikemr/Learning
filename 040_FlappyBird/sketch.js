@@ -11,6 +11,7 @@ function setup() {
   createCanvas(640, 480);
   bird = new Bird();
   pipes.push(new Pipe());
+  //test
 }
 
 function draw() {
