@@ -11,10 +11,29 @@ function setup() {
   createCanvas(640, 480);
   bird = new Bird();
   pipes.push(new Pipe());
+
+  const model = tf.sequential();
+  model.add(tf.layers.dense({units: 6, inputShape: [4],activation:"sigmoid"}));
+  model.add(tf.layers.dense({units: 2, activation:"softmax"}));
+  const learningRate = 0.01;
+  const optimizer = tf.train.sgd(learningRate);
+  model.compile({
+    optimizer: optimizer,
+    loss:'meanSquaredError'
+  });
+ 
+  function predict(arr){
+    const xs=tf.tensor2d(arr);
+    const ys=model.predict(xs);
+  }
+  
 }
 
 function draw() {
+
   background(0);
+
+  
 
   for (var i = pipes.length-1; i >= 0; i--) {
     pipes[i].show();
