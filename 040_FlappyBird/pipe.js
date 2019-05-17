@@ -7,6 +7,7 @@ function Pipe() {
     this.spacing = 175;
     this.top = random(height / 6, 3 / 4 * height);
     this.bottom = height - (this.top + this.spacing);
+    this.orta=this.top+this.spacing/2
     this.x = width;
     this.w = 80;
     this.speed = 6;
@@ -29,6 +30,11 @@ function Pipe() {
       if (this.highlight) {
         fill(255, 0, 0);
       }
+      push();
+      stroke('red');
+      strokeWeight(4);
+      point(this.x, this.orta)
+      pop();
       rect(this.x, 0, this.w, this.top);
       rect(this.x, height-this.bottom, this.w, this.bottom);
     }
