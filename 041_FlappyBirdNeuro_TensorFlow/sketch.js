@@ -27,6 +27,7 @@ function setup() {
 }
 
 function draw() {
+  // savedBirds[1].brain.model.getWeights()[2].dataSync();
   for (let n = 0; n < slider.value(); n++) {
     if (counter % 75 == 0) {
       pipes.push(new Pipe());
