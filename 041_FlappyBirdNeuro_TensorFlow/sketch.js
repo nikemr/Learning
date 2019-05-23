@@ -3,8 +3,9 @@
 // http://thecodingtrain.com
 // https://youtu.be/cdUNkwXx-I4
 
-const TOTAL = 250;
+const TOTAL = 2;
 let birds = [];
+// birds[0].brain.model.getWeights()[1].dataSync();
 let savedBirds = [];
 let pipes = [];
 let counter = 0;
