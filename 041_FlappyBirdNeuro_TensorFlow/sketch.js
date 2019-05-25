@@ -3,7 +3,7 @@
 // http://thecodingtrain.com
 // https://youtu.be/cdUNkwXx-I4
 
-const TOTAL = 2;
+const TOTAL = 120;
 let birds = [];
 // birds[0].brain.model.getWeights()[1].dataSync();
 let savedBirds = [];
