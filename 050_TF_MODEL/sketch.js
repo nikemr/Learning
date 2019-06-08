@@ -5,20 +5,11 @@ function brain() {
             units: 14,
             activation: 'sigmoid'
         }).apply(input);
-
         const output = tf.layers.dense({
             units: 4,
             activation: 'softmax'
         }).apply(hidden);
-
-
         const model = tf.model({ inputs: input, outputs: output });
-
-
-
-
-
-
         return model;
     });
 }
@@ -36,14 +27,7 @@ var randomBrain;
 
 function raider(beb) {
 
-    const now1 = t
-    
-    
-    
-    
-
-
-
+    const now1 = t;
     this.y = height / 2;
     this.x = width / 2
     this.friction = 1;
@@ -66,42 +50,21 @@ function raider(beb) {
                 }
                 let newTensor = tf.tensor(values, shape);
                 mutatedWeights[i] = newTensor;
-
             }
-
-
             this.brain.setWeights(mutatedWeights);
-
         });
-
-
     }
-
     this.show = function () {
         fill(255, 0, 0);
         ellipse(this.x, this.y, 20, 20);
     }
-
-
-
-
-    this.lifeSpan = function () {
-
-        // console.log(t-now1);
+    this.lifeSpan = function () {        
         return t - now1;
-
     }
-
-
-
-    this.update = function (yon) {
-
-        //console.log(t-now1);
+    this.update = function (yon) {        
         if (this.velocity > 0) {
-            this.velocity = this.velocity - this.friction;
-            //console.log(this.velocity);
+            this.velocity = this.velocity - this.friction;            
         }
-
         if (yon == 'sol') {
             this.x -= this.velocity;
 
@@ -131,100 +94,36 @@ function raider(beb) {
 
         tf.tidy(() => {
             const xs = tf.tensor2d([inputs]);
-
-            const output = this.brain.predict(xs).dataSync();
-
-
-            //console.log(output);
-            let maxx = Math.max.apply(null, output)
-            //console.log(maxx);
-            //console.log(output.indexOf(maxx));
-            let maxindex = output.indexOf(maxx)
-
-            //console.log(maxindex);
-            //console.log(this.brain.name);
-
-
+            const output = this.brain.predict(xs).dataSync();            
+            let maxx = Math.max.apply(null, output);            
+            let maxindex = output.indexOf(maxx);
             if (maxindex == 0) {
-                yon = 'sol'
-
-
-
+                yon = 'sol';
             }
             if (maxindex == 1) {
-                yon = 'sag'
-
+                yon = 'sag';
             }
             if (maxindex == 2) {
-                yon = 'aşağı'
-
+                yon = 'aşağı';
             }
             if (maxindex == 3) {
-                yon = 'yukarı'
-
-            }
-
-            //console.log(yon);
+                yon = 'yukarı';
+            }            
             this.update(yon);
         });
 
     }
 
 }
-
-
 function bebis() {
-
     raiders.push(new raider('bebis'));
-
-
 }
-
-
 function setup() {
     createCanvas(1000, 1000);
-    //tf.setBackend('cpu');
-
-    for (let i = 0; i < 15; i++) {
-
-        raiders.push(new raider());
-
-
-
-    }
-
-
-
-
-
+    tf.setBackend('cpu');
+    raiders.push(new raider());
 }
-
-/* function keyPressed() {
-   
-    if (key == '4') {
-        console.log('sol');
-        yon='sol'
-              
-    }
-    if (key == '8') {
-        console.log('yukarı');
-        yon='yukarı'
-    }
-    if (key == '2') {
-        console.log('aşağı');
-        yon='aşağı'
-    }
-    if (key == '6') {
-        console.log('sağ');
-        yon='sag'
-    }
-    
-} */
-
-
 var died=[];
-
-
 function die() {
     tf.tidy(() => {
         
@@ -239,66 +138,33 @@ function die() {
                  
                 //console.log(i+' öldü');
             }
-
-
         }
     });
 }
-
 function draw() {
-    
-    if (died.length==15){
-        for (let i = 0; i < 15; i++) {
-        
-     
-            died[i].brain.dispose()
-                   
-               
-        } 
-        console.log(died.length);
-        died=[];
-
+    if (died.length > 0) {
+        died[0].brain.dispose();
+        died.splice(0, 1);
     }
-    
     tf.tidy(() => {
-    x = round(random(raiders.length - 1));
-
-    randomBrain = raiders[x].brain.getWeights();
-
-    background(0);
-    die();
-    t = frameCount;
-
-
-
-
-
-    if (raiders.length <15) {
-
-        bebis();
-        
-
-
-    }
-
-    for (let i = 0; i < raiders.length; i++) {
-
-        if (keyIsPressed === true) {
-            raiders[i].velocity = 10;
+        x = round(random(raiders.length - 1));
+        randomBrain = raiders[x].brain.getWeights();
+        background(0);
+        die();
+        t = frameCount;
+        if (raiders.length < 150) {
+            bebis();
         }
-        //console.log( raider1.velocity);
-        if (raiders[i].velocity === 0) {
-            raiders[i].velocity = 10;
+        for (let i = 0; i < raiders.length; i++) {
+            if (keyIsPressed === true) {
+                raiders[i].velocity = 10;
+            }
+            //console.log( raider1.velocity);
+            if (raiders[i].velocity === 0) {
+                raiders[i].velocity = 10;
+            }
+            raiders[i].show();
+            raiders[i].think();
         }
-
-
-
-        //raider1.update(yon);
-
-        raiders[i].show();
-        raiders[i].think();
-
-
-
-    }});
+    });
 }
