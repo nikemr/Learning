@@ -30,7 +30,7 @@ function raider(beb) {
     const now1 = t;
     this.y = height / 2;
     this.x = width / 2
-    this.friction = 1;
+    this.friction = .5;
     this.velocity = 0;
 
     this.brain = new brain(beb);
@@ -130,13 +130,9 @@ function die() {
         for (let i = raiders.length - 1; i >= 0; i--) {
 
 
-            if (raiders[i].x < 0 || raiders[i].x > 1000 || raiders[i].y < 0 || raiders[i].y > 1000 || raiders[i].lifeSpan() > 500) {
-                
-                //console.log(raiders[i].brain); 
+            if (raiders[i].x < 0 || raiders[i].x > 1000 || raiders[i].y < 0 || raiders[i].y > 1000 || raiders[i].lifeSpan() > 1000) {
                 died.push(raiders[i]);
-                raiders.splice(i, 1);
-                 
-                //console.log(i+' öldü');
+                raiders.splice(i, 1);                
             }
         }
     });
@@ -152,7 +148,7 @@ function draw() {
         background(0);
         die();
         t = frameCount;
-        if (raiders.length < 150) {
+        if (raiders.length < 15) {
             bebis();
         }
         for (let i = 0; i < raiders.length; i++) {
