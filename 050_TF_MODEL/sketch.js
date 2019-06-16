@@ -1,13 +1,13 @@
 function brain() {
     return tf.tidy(() => {
-        const input = tf.input({ shape: [7] });
+        const input = tf.input({ shape: [6] });
         const hidden = tf.layers.dense({
-            units: 14,
+            units: 20,
             activation: 'sigmoid'
         }).apply(input);
         const output = tf.layers.dense({
-            units: 4,
-            activation: 'softmax'
+            units: 2,
+            activation: 'sigmoid'
         }).apply(hidden);
         const model = tf.model({ inputs: input, outputs: output });
         return model;
@@ -28,11 +28,14 @@ var randomBrain;
 function raider(beb) {
 
     const now1 = t;
-    this.y = height / 2;
-    this.x = width / 2
-    this.friction = 1;
-    this.velocity = 0;
-
+    this.pos= createVector(height / 2, width / 2);
+    // this.y = height / 2;
+    // this.x = width / 2;
+    
+    this.velocity = createVector(0, 0)
+    this.accel=createVector(0, 0);
+    this.heading=createVector(0, 0);
+    
     this.brain = new brain(beb);
     //console.log(this.brain.name);
     if (beb == 'bebis') {
@@ -54,62 +57,78 @@ function raider(beb) {
             this.brain.setWeights(mutatedWeights);
         });
     }
-    this.show = function () {
+    this.show = function (yonum) {
+        
+
+        
+        
         fill(255, 0, 0);
-        ellipse(this.x, this.y, 20, 20);
+        ellipse(this.pos.x, this.pos.y, 20, 20);
     }
     this.lifeSpan = function () {        
         return t - now1;
     }
-    this.update = function (yon) {        
-        if (this.velocity > 0) {
-            this.velocity = this.velocity - this.friction;            
-        }
-        if (yon == 'sol') {
-            this.x -= this.velocity;
 
-        }
-        if (yon == 'sag') {
-            this.x += this.velocity;
+    this.update = function (velVector) {
+        
+        
+        this.pos.add(velVector);
+        
+        
+        //bunun burada olması güzel olmadı çizimi this.show altında olmalı.
+        this.heading=velVector.heading();
+        //console.log(this.heading);
+        
+        
+        let yonum=p5.Vector.fromAngle(radians(this.heading),20);                
+        push();
+        translate(this.pos.x,this.pos.y);         
+        line(0, 0, yonum.x, yonum.y)
+        pop();
+        
+        
 
-        }
-        if (yon == 'yukarı') {
-            this.y -= this.velocity;
+        
+        
 
-        }
-        if (yon == 'aşağı') {
-            this.y += this.velocity;
 
-        }
+
     }
     this.think = function () {
         let inputs = [];
-        inputs[0] = this.y / height;
-        inputs[1] = this.x / height;
-        inputs[2] = this.velocity / 10;
-        inputs[3] = this.y / 1000;
-        inputs[4] = (alt - this.y) / 1000;
-        inputs[5] = this.x / 1000;
-        inputs[6] = (sag - this.x) / 1000;
+        let Moutput=[];
+        
+        inputs[0] = this.velocity.x ;
+        inputs[1] = this.velocity.y 
+        inputs[2] = this.pos.y / 1000;
+        inputs[3] = (alt - this.pos.y) / 1000;
+        inputs[4] = this.pos.x / 1000;
+        inputs[5] = (sag - this.pos.x) / 1000;
+        //inputs[6]=map(this.heading,-180,180,0,1)
+        //console.log(inputs[6]);
 
         tf.tidy(() => {
             const xs = tf.tensor2d([inputs]);
-            const output = this.brain.predict(xs).dataSync();            
-            let maxx = Math.max.apply(null, output);            
-            let maxindex = output.indexOf(maxx);
-            if (maxindex == 0) {
-                yon = 'sol';
+            const output = this.brain.predict(xs).dataSync();  
+            // sigmoid create values between 0 and 1, so mapped outputs: to create movement  - or + directions of x and y;        
+            for (let i = 0; i < output.length; i++) { 
+                Moutput[i]=map(output[i],0,1,-1,+1);
+
             }
-            if (maxindex == 1) {
-                yon = 'sag';
-            }
-            if (maxindex == 2) {
-                yon = 'aşağı';
-            }
-            if (maxindex == 3) {
-                yon = 'yukarı';
-            }            
-            this.update(yon);
+
+            let velVector= createVector(Moutput[0],Moutput[1]);
+            
+            
+            
+            
+           
+            
+            //console.log('iki'+velVector);
+            
+            //console.log(Moutput);
+            
+            
+            this.update(velVector);
         });
 
     }
@@ -120,6 +139,7 @@ function bebis() {
 }
 function setup() {
     createCanvas(1000, 1000);
+    angleMode(DEGREES);
     tf.setBackend('cpu');
     raiders.push(new raider());
 }
@@ -130,7 +150,7 @@ function die() {
         for (let i = raiders.length - 1; i >= 0; i--) {
 
 
-            if (raiders[i].x < 0 || raiders[i].x > 1000 || raiders[i].y < 0 || raiders[i].y > 1000 || raiders[i].lifeSpan() > 500) {
+            if (raiders[i].pos.x < 0 || raiders[i].pos.x > 1000 || raiders[i].pos.y < 0 || raiders[i].pos.y > 1000 || raiders[i].lifeSpan() > 3000) {
                 
                 //console.log(raiders[i].brain); 
                 died.push(raiders[i]);
@@ -149,20 +169,13 @@ function draw() {
     tf.tidy(() => {
         x = round(random(raiders.length - 1));
         randomBrain = raiders[x].brain.getWeights();
-        background(0);
+        background(150);
         die();
         t = frameCount;
-        if (raiders.length < 150) {
+        if (raiders.length < 50) {
             bebis();
         }
         for (let i = 0; i < raiders.length; i++) {
-            if (keyIsPressed === true) {
-                raiders[i].velocity = 10;
-            }
-            //console.log( raider1.velocity);
-            if (raiders[i].velocity === 0) {
-                raiders[i].velocity = 10;
-            }
             raiders[i].show();
             raiders[i].think();
         }
