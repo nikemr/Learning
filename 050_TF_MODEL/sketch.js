@@ -2,11 +2,11 @@ function brain() {
     return tf.tidy(() => {
         const input = tf.input({ shape: [7] });
         const hidden = tf.layers.dense({
-            units: 28,
+            units: 52,
             activation: 'sigmoid'
         }).apply(input);
         const hidden2 = tf.layers.dense({
-            units: 14,
+            units: 28,
             activation: 'sigmoid'
         }).apply(hidden);
         const output = tf.layers.dense({
@@ -69,7 +69,7 @@ function raider(beb) {
                 let shape = randomBrain[i].shape;
                 let values = tensor.dataSync().slice();
                 for (let j = 0; j < values.length; j++) {
-                    if (random(1) < .12) {
+                    if (random(1) < .15) {
                         let w = values[j];
                         values[j] = w + randomGaussian();
                     }
@@ -91,7 +91,7 @@ function raider(beb) {
     this.lifeSpan = function () {
         // this is only for showing life
         this.life = t - this.now1;
-        this.normalizedLife = map(this.life, -1000, 350, 0, 1);
+        this.normalizedLife = map(this.life, -1000, 400, -.7, .7);
 
         // this is only for showing life
         return t - this.now1;
@@ -184,7 +184,7 @@ function setup() {
     createCanvas(1000, 1000);
     angleMode(DEGREES);
     tf.setBackend('cpu');
-    popSlider = createSlider(5, 40, 30);
+    popSlider = createSlider(5, 100, 30);
 
     raiders.push(new raider());
     for (let index = 0; index < 1; index++) {
@@ -226,7 +226,7 @@ function draw() {
         //esas seçim aşağıda kommentli olan fakat aslında ben sonda kalan 5 tanenin beynini kopyalamak istiyorum.o zaman
         //x yerine 5 yazıyorum 
         //x = round(random(raiders.length - 1));
-        x = round(random(0, 4.49));
+        x = round(random(0, 9.49));
         while (raiders[x] == undefined) {
             x--;
 
@@ -235,7 +235,7 @@ function draw() {
         background(150);
         die();
         t = frameCount;
-        if (raiders.length < 5) {
+        if (raiders.length < 10) {
             for (let index = 0; index < popSlider.value(); index++) {
                 bebis();
             }
@@ -253,7 +253,7 @@ function draw() {
 
             for (let index = 0; index < chums.length; index++) {
 
-                if (t - chums[index].now1 > 200) {
+                if (t - chums[index].now1 > 300) {
                     chums.splice(i, 1);
                     chums.push(new chum());
 
