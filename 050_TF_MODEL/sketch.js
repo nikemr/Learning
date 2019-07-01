@@ -1,6 +1,6 @@
 function brain() {
     return tf.tidy(() => {
-        const input = tf.input({ shape: [7] });
+        const input = tf.input({ shape: [6] });
         const hidden = tf.layers.dense({
             units: 52,
             activation: 'sigmoid'
@@ -31,6 +31,10 @@ var randomBrain;
 let chums = [];
 var died = [];
 let popSlider;
+let foodSizer;
+let hamDistance;
+let learningRate;
+
 function chum() {
     this.now1 = t;
     this.pos = createVector(random(600) + 200, random(600) + 200);
@@ -43,7 +47,7 @@ function chum() {
         textSize(9);
         text(this.life, 15, 15)
         push();
-        ellipse(this.pos.x, this.pos.y, 130, 130);
+        ellipse(this.pos.x, this.pos.y, foodSizer.value(), foodSizer.value());
     }
     this.life = t - this.now1;
 
@@ -69,7 +73,7 @@ function raider(beb) {
                 let shape = randomBrain[i].shape;
                 let values = tensor.dataSync().slice();
                 for (let j = 0; j < values.length; j++) {
-                    if (random(1) < .15) {
+                    if (random(1) < learningRate.value()) {
                         let w = values[j];
                         values[j] = w + randomGaussian();
                     }
@@ -145,7 +149,7 @@ function raider(beb) {
         inputs[3] = this.yD1 / 1000;
         inputs[4] = this.pos.x / 1000;
         inputs[5] = this.pos.y / 1000;
-        inputs[6] = this.normalizedLife;
+        //inputs[6] = this.normalizedLife;
 
 
 
@@ -181,10 +185,22 @@ function bebis() {
     raiders.push(new raider('bebis'));
 }
 function setup() {
+    createElement('table', 'test')
+    createP('Yenilenen popülasyon büyüklüğü:');
+    popSlider = createSlider(5, 100, 80);
+    createP('Food Size:');
+    foodSizer=createSlider(21, 300, 80);
+    createP('Learning Rate:');
+    learningRate=createSlider(.01, .15, .1,.01);
+    createP('------------------');
+    
+    
     createCanvas(1000, 1000);
+    
     angleMode(DEGREES);
     tf.setBackend('cpu');
-    popSlider = createSlider(5, 100, 30);
+    
+    
 
     raiders.push(new raider());
     for (let index = 0; index < 1; index++) {
@@ -217,6 +233,7 @@ function die() {
 }
 function draw() {
 
+    hamDistance=foodSizer.value()/2+10
 
     if (died.length > 0) {
         died[0].brain.dispose();
@@ -226,7 +243,7 @@ function draw() {
         //esas seçim aşağıda kommentli olan fakat aslında ben sonda kalan 5 tanenin beynini kopyalamak istiyorum.o zaman
         //x yerine 5 yazıyorum 
         //x = round(random(raiders.length - 1));
-        x = round(random(0, 9.49));
+        x = round(random(0, 4.49));
         while (raiders[x] == undefined) {
             x--;
 
@@ -235,7 +252,7 @@ function draw() {
         background(150);
         die();
         t = frameCount;
-        if (raiders.length < 10) {
+        if (raiders.length < 5) {
             for (let index = 0; index < popSlider.value(); index++) {
                 bebis();
             }
@@ -260,7 +277,7 @@ function draw() {
                 }
 
 
-                if (p5.Vector.dist(raiders[i].pos, chums[index].pos) < 75) {
+                if (p5.Vector.dist(raiders[i].pos, chums[index].pos) < hamDistance) {
                     raiders[i].now1 = t + 1000;
 
                     if (index == 0) {
