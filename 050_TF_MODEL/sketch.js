@@ -184,18 +184,21 @@ function raider(beb) {
 function bebis() {
     raiders.push(new raider('bebis'));
 }
+let cowbell;
 function setup() {
-    createElement('table', 'test')
-    createP('Yenilenen popülasyon büyüklüğü:');
-    popSlider = createSlider(5, 100, 80);
-    createP('Food Size:');
+    
+      
+    popSlider = select('#popSlider');
+    
     foodSizer=createSlider(21, 300, 80);
-    createP('Learning Rate:');
+    
     learningRate=createSlider(.01, .15, .1,.01);
-    createP('------------------');
     
     
-    createCanvas(1000, 1000);
+    
+    var canvasid=createCanvas(1000, 1000);
+    canvasid.parent('canvasid');
+
     
     angleMode(DEGREES);
     tf.setBackend('cpu');
