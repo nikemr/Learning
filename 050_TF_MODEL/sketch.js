@@ -189,10 +189,11 @@ function setup() {
     
       
     popSlider = select('#popSlider');
+    foodSizer= select('#foodSizer');
+    learningRate=select('#learningRate');
+    //foodSizer=createSlider(21, 300, 80);
     
-    foodSizer=createSlider(21, 300, 80);
-    
-    learningRate=createSlider(.01, .15, .1,.01);
+    //learningRate=createSlider(.01, .15, .1,.01);
     
     
     
