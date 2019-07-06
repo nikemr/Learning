@@ -75,7 +75,8 @@ function raider(beb) {
                 for (let j = 0; j < values.length; j++) {
                     if (random(1) < learningRate.value()) {
                         let w = values[j];
-                        values[j] = w + randomGaussian();
+                        // bunun slider'ını yapmam gerekiyor
+                        values[j] = w + randomGaussian(0,.5);
                     }
                 }
                 let newTensor = tf.tensor(values, shape);
