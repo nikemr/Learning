@@ -33,6 +33,7 @@ var died = [];
 let popSlider;
 let foodSizer;
 let hamDistance;
+let learningchance;
 let learningRate;
 
 function chum() {
@@ -73,10 +74,10 @@ function raider(beb) {
                 let shape = randomBrain[i].shape;
                 let values = tensor.dataSync().slice();
                 for (let j = 0; j < values.length; j++) {
-                    if (random(1) < learningRate.value()) {
+                    if (random(1) < learningchance.value()) {
                         let w = values[j];
                         // bunun slider'ını yapmam gerekiyor
-                        values[j] = w + randomGaussian(0,.5);
+                        values[j] = w + randomGaussian(0,learningRate.value());
                     }
                 }
                 let newTensor = tf.tensor(values, shape);
@@ -191,6 +192,7 @@ function setup() {
       
     popSlider = select('#popSlider');
     foodSizer= select('#foodSizer');
+    learningchance=select('#learningchance');
     learningRate=select('#learningRate');
     //foodSizer=createSlider(21, 300, 80);
     
