@@ -39,12 +39,11 @@ let learningRate;
 function chum() {
     this.now1 = t;
     this.pos = createVector(random(600) + 200, random(600) + 200);
-
+    
     this.show = function () {
         this.life = t - this.now1;
-        fill(0, 255, 0);
         pop();
-
+        fill(0, 255, 0); 
         textSize(9);
         text(this.life, 15, 15)
         push();
@@ -105,13 +104,8 @@ function raider(beb) {
 
     this.update = function (velVector) {
 
-
+        
         this.pos.add(velVector);
-
-
-
-
-
         //bunun burada olması güzel olmadı çizimi this.show altında olmalı.
         this.heading = velVector.heading();
 
@@ -120,15 +114,22 @@ function raider(beb) {
 
         let yonum = p5.Vector.fromAngle(radians(this.heading), 20);
 
+        
         push();
         translate(this.pos.x, this.pos.y);
+        line(0, 0, yonum.x, yonum.y);
+        
         fill(0, 102, 153);
         textSize(9);
         text(this.life, 15, 15)
         fill(255, 102, 153);
         text(round(this.heading), -15, -15);
-        line(0, 0, yonum.x, yonum.y);
         pop();
+        
+        
+       
+       
+        
 
 
 
@@ -187,22 +188,24 @@ function bebis() {
     raiders.push(new raider('bebis'));
 }
 let cowbell;
+let canvasis;
 function setup() {
     
-      
+    
     popSlider = select('#popSlider');
     foodSizer= select('#foodSizer');
     learningchance=select('#learningchance');
     learningRate=select('#learningRate');
-    //foodSizer=createSlider(21, 300, 80);
-    
-    //learningRate=createSlider(.01, .15, .1,.01);
+    bestBefore=select('#bestBefore');
     
     
     
-    var canvasid=createCanvas(1000, 1000);
-    canvasid.parent('canvasid');
-
+    
+    
+    
+    canvasis=createCanvas(1000, 1000);
+    canvasis.parent('canvasid');
+    
     
     angleMode(DEGREES);
     tf.setBackend('cpu');
@@ -214,6 +217,7 @@ function setup() {
         chums.push(new chum());
 
     }
+    
 
 
 
@@ -238,8 +242,36 @@ function die() {
         }
     });
 }
-function draw() {
 
+
+function moveChum() {
+    chums[0].pos.x=mouseX;
+    chums[0].pos.y=mouseY;
+    
+}
+
+
+let mouseFlag;
+mouseFlag=0;
+function mouseStart() {
+   mouseFlag=1;
+    
+    
+}
+function mouseStop() {
+    mouseFlag=0;
+     
+     
+ }
+
+    
+
+
+
+
+
+function draw() {
+    //console.log(canvasid);
     hamDistance=foodSizer.value()/2+10
 
     if (died.length > 0) {
@@ -277,7 +309,7 @@ function draw() {
 
             for (let index = 0; index < chums.length; index++) {
 
-                if (t - chums[index].now1 > 300) {
+                if (t - chums[index].now1 > bestBefore.value()) {
                     chums.splice(i, 1);
                     chums.push(new chum());
 
@@ -305,7 +337,18 @@ function draw() {
 
         }
     });
+    if (mouseFlag==1){
+
+        moveChum();
+    }
     chums[0].show();
+    canvasis.mousePressed(mouseStart); 
+    canvasis.mouseReleased(mouseStop);
+    
+    
+        
+    
+    
 
 
 
