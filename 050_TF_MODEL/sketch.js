@@ -42,11 +42,11 @@ function chum() {
     
     this.show = function () {
         this.life = t - this.now1;
-        pop();
+        
         fill(0, 255, 0); 
         textSize(9);
         text(this.life, 15, 15)
-        push();
+        
         ellipse(this.pos.x, this.pos.y, foodSizer.value(), foodSizer.value());
     }
     this.life = t - this.now1;
@@ -85,14 +85,29 @@ function raider(beb) {
             this.brain.setWeights(mutatedWeights);
         });
     }
-    this.show = function (yonum) {
+    this.show = function () {
 
 
 
 
         fill(255, 0, 0);
         ellipse(this.pos.x, this.pos.y, 20, 20);
+
+        this.yonum = p5.Vector.fromAngle(radians(this.heading), 20);
+        push();
+        translate(this.pos.x, this.pos.y);
+        
+        line(0, 0, this.yonum.x, this.yonum.y);
+        
+        fill(0, 102, 153);
+        textSize(9);
+        text(this.life, 15, 15)
+        fill(255, 102, 153);
+        text(round(this.heading), -15, -15);
+        pop();
+
     }
+
     this.lifeSpan = function () {
         // this is only for showing life
         this.life = t - this.now1;
@@ -101,7 +116,7 @@ function raider(beb) {
         // this is only for showing life
         return t - this.now1;
     }
-
+    
     this.update = function (velVector) {
 
         
@@ -112,19 +127,10 @@ function raider(beb) {
         //console.log(this.heading);
 
 
-        let yonum = p5.Vector.fromAngle(radians(this.heading), 20);
-
         
-        push();
-        translate(this.pos.x, this.pos.y);
-        line(0, 0, yonum.x, yonum.y);
         
-        fill(0, 102, 153);
-        textSize(9);
-        text(this.life, 15, 15)
-        fill(255, 102, 153);
-        text(round(this.heading), -15, -15);
-        pop();
+        
+        
         
         
        
