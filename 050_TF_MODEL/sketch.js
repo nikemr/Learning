@@ -17,7 +17,7 @@ function brain() {
         return model;
     });
 }
-
+let generation;
 var yon;
 var ust = 5;
 var alt = 1000;
@@ -30,6 +30,7 @@ let x;
 var randomBrain;
 let chums = [];
 var died = [];
+let miniPop;
 let popSlider;
 let foodSizer;
 let hamDistance;
@@ -62,7 +63,7 @@ function raider(beb) {
     this.velocity = createVector(0, 0)
     this.accel = createVector(0, 0);
     this.heading = createVector(0, 0);
-
+    this.generation=generation;
     this.brain = new brain(beb);
     //console.log(this.brain.name);
     if (beb == 'bebis') {
@@ -103,8 +104,9 @@ function raider(beb) {
         fill(0, 102, 153);
         textSize(9);
         text(this.life, 15, 15)
-        fill(255, 102, 153);
-        text(round(this.heading), -15, -15);
+        fill(255, 0, 0);
+        text(this.generation, -15, -15)
+        //text(round(this.heading), -15, -15);
         pop();
 
     }
@@ -165,8 +167,8 @@ function bebis() {
 let cowbell;
 let canvasis;
 function setup() {
-    
-    
+    generation=0;
+    miniPop=select('#miniPop');    
     popSlider = select('#popSlider');
     foodSizer= select('#foodSizer');
     learningchance=select('#learningchance');
@@ -241,29 +243,29 @@ function mouseStop() {
 
 function draw() {
     
-    hamDistance=foodSizer.value()/2+10
-
+    hamDistance=foodSizer.value()/2+10;
+    
     if (died.length > 0) {
         died[0].brain.dispose();
         died.splice(0, 1);
     }
     tf.tidy(() => {
         //esas seçim aşağıda kommentli olan fakat aslında ben sonda kalan 5 tanenin beynini kopyalamak istiyorum.o zaman
-        //x yerine 5 yazıyorum 
-        //x = round(random(raiders.length - 1));
-        x = round(random(0, 4.49));
+              
+        //x = round(random(0, 4.49));
+        x = round(random(0, miniPop.value()-0.51));
         while (raiders[x] == undefined) {
             x--;
-
         }
         randomBrain = raiders[x].brain.getWeights();
         background(150);
         die();
         t = frameCount;
-        if (raiders.length < 5) {
+        if (raiders.length < miniPop.value()) {
             for (let index = 0; index < popSlider.value(); index++) {
                 bebis();
             }
+            generation++;
         }
 
         for (let i = 0; i < raiders.length; i++) {
@@ -306,6 +308,13 @@ function draw() {
 
         }
     });
+    push();
+    fill(255,0,0);
+    textSize(12);
+    textStyle(BOLDITALIC);
+    textFont('Helvetica');
+    text("GEN: "+generation, 15, 40);
+    pop();
     if (mouseFlag==1){
 
         moveChum();
