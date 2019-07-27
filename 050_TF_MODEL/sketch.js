@@ -39,7 +39,7 @@ let learningRate;
 
 function chum() {
     this.now1 = t;
-    this.pos = createVector(random(600) + 200, random(600) + 200);
+    this.pos = createVector(random(750) + 200, random(750) + 200);
     
     this.show = function () {
         this.life = t - this.now1;
