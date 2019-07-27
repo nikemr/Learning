@@ -67,6 +67,7 @@ function raider(beb) {
     //console.log(this.brain.name);
     if (beb == 'bebis') {
         tf.tidy(() => {
+            // this mutation part is mostly from Daniel Shiffman
             const mutatedWeights = [];
             for (let i = 0; i < randomBrain.length; i++) {
                 let tensor = randomBrain[i];
@@ -75,7 +76,7 @@ function raider(beb) {
                 for (let j = 0; j < values.length; j++) {
                     if (random(1) < learningchance.value()) {
                         let w = values[j];
-                        // bunun slider'ını yapmam gerekiyor
+                        
                         values[j] = w + randomGaussian(0,learningRate.value());
                     }
                 }
@@ -124,33 +125,11 @@ function raider(beb) {
         //bunun burada olması güzel olmadı çizimi this.show altında olmalı.
         this.heading = velVector.heading();
 
-        //console.log(this.heading);
-
-
-        
-        
-        
-        
-        
-        
-       
-       
-        
-
-
-
-
-
-
-
-
+        //console.log(this.heading); 
     }
     this.think = function () {
         let inputs = [];
         let Moutput = [];
-
-
-
 
         inputs[0] = chums[0].pos.x / 1000;
         inputs[1] = chums[0].pos.y / 1000;
@@ -174,16 +153,6 @@ function raider(beb) {
             }
 
             let velVector = createVector(Moutput[0], Moutput[1]);
-
-
-
-
-
-
-
-
-
-
             this.update(velVector);
         });
 
@@ -203,12 +172,6 @@ function setup() {
     learningchance=select('#learningchance');
     learningRate=select('#learningRate');
     bestBefore=select('#bestBefore');
-    
-    
-    
-    
-    
-    
     canvasis=createCanvas(1000, 1000);
     canvasis.parent('canvasid');
     
@@ -277,7 +240,7 @@ function mouseStop() {
 
 
 function draw() {
-    //console.log(canvasid);
+    
     hamDistance=foodSizer.value()/2+10
 
     if (died.length > 0) {
