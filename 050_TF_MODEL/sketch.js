@@ -1,10 +1,12 @@
 function brain() {
     return tf.tidy(() => {
         const input = tf.input({ shape: [6] });
+        
         const hidden = tf.layers.dense({
             units: 52,
             activation: 'sigmoid'
         }).apply(input);
+        
         const hidden2 = tf.layers.dense({
             units: 28,
             activation: 'sigmoid'
