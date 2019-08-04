@@ -22,9 +22,12 @@ const output = tf.layers.dense({
     units: 2,
     activation: 'tanh'
 }).apply(hidden2);
-//const model = tf.model({ inputs: input, outputs: output });
+/* what I learned: I was looking for a way to reach each layer's and unit's output (activation results) for visualisation
+but addition to that I also learned more than one output very possible (Check link below )  */
 
 // https://stackoverflow.com/questions/51483285/print-all-layers-output
+
+
 const model =tf.model({inputs: input, outputs: [hidden, hidden2,output]});
 
 let inputs = [];
