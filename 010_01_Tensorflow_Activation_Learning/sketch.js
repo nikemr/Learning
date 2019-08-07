@@ -40,7 +40,7 @@ inputs[4] = .6
 inputs[5] = .85
 
 const xs = tf.tensor2d([inputs]);
-//const outputing = model.predict(xs).dataSync();
+
 const [firstLayer, secondLayer,thirdLayer] = model.predict(xs);
 console.log(firstLayer.arraySync());
 console.log(secondLayer.arraySync());

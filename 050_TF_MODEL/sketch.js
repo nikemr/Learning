@@ -15,7 +15,8 @@ function brain() {
             units: 2,
             activation: 'tanh'
         }).apply(hidden2);
-        const model = tf.model({ inputs: input, outputs: output });
+        const model = tf.model({ inputs: input, outputs: [hidden, hidden2,output] });
+
         return model;
     });
 }
@@ -59,15 +60,11 @@ function raider(beb) {
 
     this.now1 = t;
     this.pos = createVector(random(700) + 100, random(700) + 100);
-    // this.y = height / 2;
-    // this.x = width / 2;
-
     this.velocity = createVector(0, 0)
     this.accel = createVector(0, 0);
     this.heading = createVector(0, 0);
     this.generation=generation;
-    this.brain = new brain(beb);
-    //console.log(this.brain.name);
+    this.brain = new brain(beb);    
     if (beb == 'bebis') {
         tf.tidy(() => {
             // this mutation part is mostly from Daniel Shiffman
@@ -89,12 +86,15 @@ function raider(beb) {
             this.brain.setWeights(mutatedWeights);
         });
     }
+
     this.show = function () {
 
-
-
-
-        fill(255, 0, 0);
+        fill(255, 151, 151);
+        // ana kraliçe
+        if (raiders.indexOf(this)===0){
+            fill(255, 0, 0);
+        }
+        console.log(raiders.indexOf(this));
         ellipse(this.pos.x, this.pos.y, 20, 20);
 
         this.yonum = p5.Vector.fromAngle(radians(this.heading), 20);
@@ -107,7 +107,10 @@ function raider(beb) {
         textSize(9);
         text(this.life, 15, 15)
         fill(255, 0, 0);
-        text(this.generation, -15, -15)
+        text(this.generation, -15, -15);
+        fill(0, 0, 0);
+        text(raiders.indexOf(this), -15, -25)
+
         //text(round(this.heading), -15, -15);
         pop();
 
@@ -149,7 +152,9 @@ function raider(beb) {
 
         tf.tidy(() => {
             const xs = tf.tensor2d([inputs]);
-            const output = this.brain.predict(xs).dataSync();
+            const [firstLayer, secondLayer,thirdLayer] = this.brain.predict(xs);
+            //const output = this.brain.predict(xs).dataSync();
+            const output = thirdLayer.dataSync();
             // sigmoid create values between 0 and 1, so mapped outputs: to create movement  - or + directions of x and y;        
             for (let i = 0; i < output.length; i++) {
                 Moutput[i] = map(output[i], -1, 1, -3, 3);
@@ -166,10 +171,11 @@ function raider(beb) {
 function bebis() {
     raiders.push(new raider('bebis'));
 }
-let cowbell;
+
 let canvasis;
+
 function setup() {
-    generation=0;
+    generation=1;
     miniPop=select('#miniPop');    
     popSlider = select('#popSlider');
     foodSizer= select('#foodSizer');
@@ -242,7 +248,7 @@ function mouseStop() {
 
 
 
-
+ let gen;
 function draw() {
     
     hamDistance=foodSizer.value()/2+10;
@@ -266,8 +272,11 @@ function draw() {
         if (raiders.length < miniPop.value()) {
             for (let index = 0; index < popSlider.value(); index++) {
                 bebis();
+                ;
             }
-            generation++;
+            generation++
+            // gen is for a correction "raiders.length < miniPop.value()) creates a problem at the first run and pushes generation ahead of true number"
+            gen=generation-1
         }
 
         for (let i = 0; i < raiders.length; i++) {
@@ -311,11 +320,12 @@ function draw() {
         }
     });
     push();
+    
     fill(255,0,0);
     textSize(12);
     textStyle(BOLDITALIC);
     textFont('Helvetica');
-    text("GEN: "+generation, 15, 40);
+    text("GEN: "+gen, 15, 40);
     pop();
     if (mouseFlag==1){
 
@@ -324,15 +334,5 @@ function draw() {
     chums[0].show();
     canvasis.mousePressed(mouseStart); 
     canvasis.mouseReleased(mouseStop);
-    
-    
-        
-    
-    
-
-
-
-
-
 
 }
