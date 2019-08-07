@@ -94,7 +94,7 @@ function raider(beb) {
         if (raiders.indexOf(this)===0){
             fill(255, 0, 0);
         }
-        console.log(raiders.indexOf(this));
+        
         ellipse(this.pos.x, this.pos.y, 20, 20);
 
         this.yonum = p5.Vector.fromAngle(radians(this.heading), 20);
