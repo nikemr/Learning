@@ -40,7 +40,7 @@ function setup() {
     angleMode(DEGREES);
     tf.setBackend('cpu');
     raiders.push(new raider());
-    
+    neural1= new neural();
     
     for (let index = 0; index < 1; index++) {
         chums.push(new chum());
@@ -139,7 +139,7 @@ function draw() {
         moveChum();
     }
     raiderZero=raiders[0].brain;
-    neural();
+    bubbleShow(neural1);
     chums[0].show();
     canvasis.mousePressed(mouseStart); 
     canvasis.mouseReleased(mouseStop);
