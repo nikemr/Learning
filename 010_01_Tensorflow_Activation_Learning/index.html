@@ -1,17 +1,126 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
+    <title>NeuroEvolution with tf.js</title>
+  </head>
+  <body>
+    <script src="sketch.js"></script>
+    <script src="brain.js"></script>
+    <script src="neurons.js"></script>
+    <script src="raiders.js"></script>
+    <script src="chum.js"></script>
+    
+	  <table width="300" border="0">
+  <tbody>
+    <tr>
+      <td id="canvasid"> </td>
+      <td><table width="500" border="0" align="center">
+  <tbody>
+      <tr>
+          <td>Minimum population size(5-100)</td>
+      </tr>
+      <tr>
+          <td><input type="range" id="miniPop" name="miniPop" 
+            min="1" max="100" value="15" step="5"></td>
+        </tr>
+    <tr>
+      <td>Incoming population size (5-300)</td>
+    </tr>
+    <tr>
+      <td><input type="range" id="popSlider" name="popSlider" 
+        min="5" max="300" value="200" step="1"></td>
+    </tr>
+    <tr>
+      <td>Food Size (21-300)</td>
+    </tr>
+    <tr>
+      <td><input type="range" id="foodSizer" name="foodSizer" 
+        min="21" max="300" value="80" step="1"></td>
+    </tr>
+    <tr>
+      <td>LearningRate (0.2- 1)</td>
+    </tr>
+    <tr>
+      <td><input type="range" id="learningRate" name="learningRate" 
+        min=".2" max="1" value=".5" step=".01"></td>
+    </tr>
+    <tr>
+      <td>Mutation Chance of a weight (%1-%15)</td>
+    </tr>
+    <tr>
+      <td><input type="range" id="learningchance" name="learningchance" 
+        min=".01" max=".15" value=".1" step=".01"></td>
+    </tr>
+    <tr>
+      <td>Best Before (300-1000)</td>
+    </tr>
+    <tr>
+      <td><input type="range" id="bestBefore" name="bestBefore" 
+        min="300" max="1000" value="300" step="100"></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
 
-	<title>linear regression with tensorflow</title>
+          </td>
+</tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+      
+      
+  </tbody>
+</table>
+	  <ol>
+	    <li><li></li></li>
+  </ol>
 
-	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
-	<script src="sketch.js"></script>
-</head>
-<body>
-</body>
+    
+  </body>
 </html>
