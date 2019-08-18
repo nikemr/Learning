@@ -85,7 +85,14 @@ function raider(beb) {
         inputs[3] = this.yD1 / 1000;
         inputs[4] = this.pos.x / 1000;
         inputs[5] = this.pos.y / 1000;
-        //inputs[6] = this.normalizedLife;
+        inputs[6] = (width-this.pos.x) / 1000;
+        inputs[7] = (height-this.pos.y) / 1000;
+        //chum's life . Uzaksa gitmez mesela uzaklığı öğrenir eleman
+        inputs[8] = (t - chums[0].now1)/bestBefore.value();
+        //neuronların görselleştirilmesi için
+        this.firstLayerInputs=inputs;
+        //neuronların görselleştirilmesi için
+        
 
 
 
@@ -96,6 +103,11 @@ function raider(beb) {
             const [firstLayer, secondLayer,thirdLayer] = this.brain.predict(xs);
             //const output = this.brain.predict(xs).dataSync();
             const output = thirdLayer.dataSync();
+            //neuronların görselleştirilmesi için
+            this.hidden2Activations=secondLayer.dataSync();
+            this.hidden1Activations=firstLayer.dataSync();
+            this.outputLayerActivations=output;
+            //neuronların görselleştirilmesi için
             // sigmoid create values between 0 and 1, so mapped outputs: to create movement  - or + directions of x and y;        
             for (let i = 0; i < output.length; i++) {
                 Moutput[i] = map(output[i], -1, 1, -3, 3);

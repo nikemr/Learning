@@ -25,7 +25,7 @@ let inputLayerUnits;
 let hiddenLayerUnits;
 let hidden2LayerUnits;
 let outputLayerUnits;
-let neural1;
+let neuralSchema;
 
 function setup() {
     generation=1;
@@ -40,7 +40,7 @@ function setup() {
     angleMode(DEGREES);
     tf.setBackend('cpu');
     raiders.push(new raider());
-    neural1= new neural();
+    neuralSchema= new neural();
     
     for (let index = 0; index < 1; index++) {
         chums.push(new chum());
@@ -132,16 +132,19 @@ function draw() {
     textStyle(BOLDITALIC);
     textFont('Helvetica');
     text("GEN: "+gen, 15, 40);
+    text(t - chums[0].now1)
     
     pop();
     if (mouseFlag==1){
 
         moveChum();
     }
+    tf.tidy(() => {
     raiderZero=raiders[0].brain;
-    bubbleShow(neural1);
+    
     chums[0].show();
     canvasis.mousePressed(mouseStart); 
     canvasis.mouseReleased(mouseStop);
-
+    bubbleShow(neuralSchema);
+    });
 }
